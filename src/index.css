@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+/* 1. Анімація для Liquid Blob */
+@keyframes liquidMove {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(-50px, 50px) scale(1.1);
+    }
+    50% {
+        transform: translate(50px, -50px) scale(0.9);
+    }
+    75% {
+        transform: translate(-50px, -50px) scale(1.2);
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+/* 2. Стилі для Liquid Blob (Білий/Світло-Жовтий) */
+.liquid-blob {
+    position: absolute;
+    width: 50vw;
+    height: 50vw;
+    min-width: 400px;
+    min-height: 400px;
+    background: #FFF; /* Lemon Chiffon - Дуже світло-жовтий */
+    border-radius: 50%;
+    opacity: 0.9;
+    filter: blur(160px); /* Сильне розмиття */
+    animation: liquidMove 20s infinite alternate ease-in-out;
+    z-index: -1;
+    top: 10%;
+    left: 28%;
+    transform: translate(-50%, -50%);
+}
+
+/* 3. Стилі для Liquid Glass Container (Біле Скло) */
+.liquid-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    /* Додаємо напівпрозорий білий фон */
+    /* backdrop-filter: blur(80px); - Робимо ефект скла */
+    background: rgba(255, 186, 0, 0.21);
+    -webkit-backdrop-filter: blur(80px);
+    backdrop-filter: blur(80px);
+    z-index: 10;
+}
+
+/* Переконаємося, що body має чорний фон для контрасту */
+body {
+    background-color: #000 !important; /* Для темних відтінків на тлі */
+    margin: 0;
+    overflow: hidden;
+}
