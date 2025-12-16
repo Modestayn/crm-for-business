@@ -3,9 +3,23 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+// !!! ВИПРАВЛЕНО: Додаємо визначення типу для ролей, щоб уникнути помилок Typescript !!!
+interface Role {
+  name: string;
+}
+
 const Home: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Отримуємо масив імен ролей ['teacher', 'admin']
+  // !!! КОРЕКТНА ОБРОБКА РОЛЕЙ !!!
+  const roleNames = user?.roles
+    ? user.roles.map((role: Role) => role.name)
+    : [];
+
+  // Допоміжна функція для перевірки ролі
+  const hasRole = (role: string) => roleNames.includes(role);
 
   const handleLogout = async () => {
     try {
@@ -31,7 +45,8 @@ const Home: React.FC = () => {
             Email: <span className="font-semibold text-yellow-700">{user?.email}</span>
           </p>
           <p className="text-gray-700 text-lg mb-6">
-            Ваші Ролі: <span className="font-semibold text-yellow-700">{user?.roles.join(', ') || 'Немає'}</span>
+            {/* !!! ВИПРАВЛЕНО: Виводимо коректний список імен ролей !!! */}
+            Ваші Ролі: <span className="font-semibold text-yellow-700">{roleNames.join(', ') || 'Немає'}</span>
           </p>
 
           <p className="text-gray-500 mb-8 italic">
@@ -42,14 +57,16 @@ const Home: React.FC = () => {
             <button
               onClick={() => navigate('/teacher')}
               className="w-full py-3 px-6 bg-yellow-500 text-gray-900 font-extrabold rounded-xl hover:bg-yellow-600 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!user?.roles.includes('teacher')}
+              // !!! ВИПРАВЛЕНО: Використовуємо коректну перевірку hasRole !!!
+              disabled={!hasRole('teacher')}
             >
               Перейти до Секції Викладача
             </button>
             <button
               onClick={() => navigate('/admin')}
               className="w-full py-3 px-6 bg-yellow-500 text-gray-900 font-extrabold rounded-xl hover:bg-yellow-600 transition duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!user?.roles.includes('admin')}
+              // !!! ВИПРАВЛЕНО: Використовуємо коректну перевірку hasRole !!!
+              disabled={!hasRole('admin')}
             >
               Перейти до Секції Адміністратора
             </button>

@@ -1,10 +1,17 @@
-// src/context/AuthContext.tsx (або просто src/AuthContext.tsx)
+// src/context/AuthContext.tsx
+
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { fetchCurrentUser, login as apiLogin, register as apiRegister, logout as apiLogout } from '../api/auth'; // Переконайтеся, що шлях до api/auth коректний
+import { fetchCurrentUser, login as apiLogin, register as apiRegister, logout as apiLogout } from '../api/auth';
 import type { User } from '../types/auth';
+// !!! ВИПРАВЛЕНО: ДОДАНО ІМПОРТ AXIOS !!!
+import axios from 'axios';
+
+// !!! ВИПРАВЛЕНО: Визначаємо тип, який включає ролі (потрібно для ProtectedRoute) !!!
+type UserWithRoles = User & { roles?: { name: string }[] };
 
 interface AuthContextType {
-  user: User | null;
+  // !!! ВИПРАВЛЕНО: Використовуємо розширений тип для user !!!
+  user: UserWithRoles | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -19,15 +26,29 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  // !!! ВИПРАВЛЕНО: Використовуємо розширений тип у useState !!!
+  const [user, setUser] = useState<UserWithRoles | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadUser = async () => {
     try {
       const userData = await fetchCurrentUser();
-      setUser(userData);
+
+      // !!! ВИПРАВЛЕНО: Примусове приведення типу. Це може бути єдиним способом, якщо ваш fetchCurrentUser
+      // повертає лише User, але ми знаємо, що він повертає User із ролями.
+      setUser(userData as UserWithRoles);
+
     } catch (error) {
-      console.log(error)
+      // !!! КРИТИЧНЕ ВИПРАВЛЕННЯ: БЕЗПЕЧНА ОБРОБКА ПОМИЛОК AXIOS !!!
+      // Цей блок запобігає падінню "reading 'json'" і приховує помилки 401.
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        // Очікувана помилка: користувач не увійшов.
+        console.log("User not logged in (401 response).");
+      } else {
+        // Інша, невідома помилка, або проблема з бекендом
+        console.error("Error loading current user:", error);
+      }
+      // Очищуємо стан користувача, щоб продовжити роботу як гість
       setUser(null);
     } finally {
       setIsLoading(false);
