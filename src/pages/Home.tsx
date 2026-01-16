@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import AdminStats from '../components/AdminStats';
+import AdminStats from '../components/AdminPanel/AdminStats.tsx';
 interface Role {
   name: string;
 }
