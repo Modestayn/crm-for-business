@@ -26,73 +26,105 @@ const Register: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="liquid-blob"></div>
-      <div className="liquid-container flex items-center justify-center min-h-screen p-4">
+    <div className="relative min-h-screen w-full flex items-center justify-center bg-[#0f172a] overflow-hidden font-sans">
+      {/* Динамічний фон - ті самі сфери для консистентності */}
+      <div className="absolute top-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-blue-600/10 blur-[120px] animate-pulse"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-[45%] h-[45%] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse delay-1000"></div>
 
-        {/* Форма Реєстрації з ефектом білого скла */}
-        <div className="max-w-md w-full p-8 bg-white bg-opacity-70 shadow-2xl rounded-3xl border border-gray-300 border-opacity-50 z-20 transition duration-500  backdrop-blur-sm">
-          <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">Реєстрація</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Ім'я:
+      <div className="relative z-10 w-full max-w-md p-[0 40px 0 40px]">
+        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 md:p-12">
+
+          {/* Заголовок */}
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-black tracking-tight text-white mb-3">
+              Створити аккаунт
+            </h2>
+            <p className="text-slate-400 text-sm">Приєднуйтесь до нашої спільноти</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Поле Ім'я */}
+            <div className="group">
+              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
+                Ваше ім'я
               </label>
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                placeholder="Олександр"
+                className="w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300"
                 required
-                className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
             </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email:
+
+            {/* Поле Email */}
+            <div className="group">
+              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
+                Електронна пошта
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@mail.com"
+                className="w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300"
                 required
-                className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Пароль:
+
+            {/* Поле Пароль */}
+            <div className="group">
+              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
+                Пароль
               </label>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300"
                 required
-                className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
             </div>
-            {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+
+            {error && (
+              <p className="text-red-400 text-xs text-center font-medium bg-red-500/5 py-2 rounded-lg border border-red-500/10">
+                {error}
+              </p>
+            )}
+
+            {/* Кнопка реєстрації */}
             <button
               type="submit"
-              className="cursor-pointer w-full py-3 px-4 bg-yellow-500 text-gray-900 font-extrabold rounded-xl hover:shadow-[4px_4px_#000000] transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+              className="w-full mt-4 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-[0_10px_20px_-10px_rgba(79,70,229,0.5)] active:scale-[0.97] transition-all duration-200"
             >
               Зареєструватися
             </button>
           </form>
-          <p className="mt-6 text-center text-sm text-gray-500">
-            Вже маєте обліковий запис?
-            <span
-              onClick={() => navigate('/login')}
-              className="text-yellow-600 hover:text-yellow-700 ml-1 cursor-pointer font-medium"
-            >
-              Увійти
-            </span>
-          </p>
+
+          {/* Перехід на вхід */}
+          <div className="mt-8 pt-6 border-t border-white/5 text-center">
+            <p className="text-slate-400 text-sm">
+              Вже маєте профіль?{' '}
+              <button
+                onClick={() => navigate('/login')}
+                className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors"
+              >
+                Увійти
+              </button>
+            </p>
+          </div>
         </div>
+        <p className="mt-8 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]">
+          Раді вітати у нашій CRM системі!
+        </p>
       </div>
-    </>
+    </div>
+
   );
 };
 
