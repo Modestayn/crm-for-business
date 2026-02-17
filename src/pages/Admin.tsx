@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   UserPlus,
   ShieldCheck,
@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../api/auth'; // Твій налаштований axios
+
 // --- ТИПИ ДАНИХ ---
 interface Group {
   id: string;
@@ -37,13 +39,88 @@ interface Teacher {
   groups: Group[];
 }
 
+interface DashboardStats {
+  students: { val: string; up: string };
+  groups: { val: string; up: string };
+  revenue: { val: string; up: string };
+  attendance: { val: string; up: string };
+}
+
 export default function Admin() {
   const { logout } = useAuth();
   const navigate = useNavigate();
+
+  // --- СТАН ДЛЯ ДАНИХ З БАЗИ ---
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('Викладачі');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedTeacher, setExpandedTeacher] = useState<string | null>(null);
+
+  // --- ЗАВАНТАЖЕННЯ ДАНИХ ---
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // 1. Отримуємо статистику та список користувачів паралельно
+        const [statsRes, usersRes] = await Promise.all([
+          api.get('/api/admin/stats'),
+          api.get('/api/admin/users')
+        ]);
+
+        // 2. Форматуємо статистику (блок над списком)
+        if (statsRes.data.status === 'success') {
+          const s = statsRes.data.data.teacher_stats;
+          const main = statsRes.data.data.main_stats;
+          setStats({
+            students: { val: s.total_students.toString(), up: '+12%' },
+            groups: { val: s.active_groups.toString(), up: 'Live' },
+            revenue: { val: '$4,200', up: '+5%' }, // Поки статика, якщо немає в БД
+            attendance: { val: '94%', up: '-2%' }  // Поки статика
+          });
+        }
+
+        // 3. Форматуємо список викладачів
+        if (usersRes.data.status === 'success') {
+          // usersRes.data.data — це тепер масив, бо ми прибрали paginate
+          const rawUsers = usersRes.data.data;
+
+          const formattedTeachers = rawUsers
+            .filter((user: any) =>
+              // Перевіряємо, чи є серед ролей 'teacher'
+              user.roles.some((role: any) => role.name === 'teacher')
+            )
+            .map((user: any) => ({
+              id: user.id.toString(),
+              name: user.name,
+              role: user.specialization || 'Mentor',
+              load: `${user.weekly_load || 0} год/тижд`,
+              groups: (user.groups || []).map((g: any) => ({
+                id: g.id.toString(),
+                name: g.name,
+                studentsCount: g.students_count || 0,
+                maxStudents: g.max_students || 15,
+                progress: g.progress || 0,
+                status: g.status || 'Активна'
+              }))
+            }));
+
+          setTeachers(formattedTeachers);
+        }
+      } catch (error) {
+        console.error('Data loading failed:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -52,46 +129,14 @@ export default function Admin() {
       console.error('Logout failed:', error);
     }
   };
-  // --- ДАНІ ДЛЯ ПРИКЛАДУ ---
-  const teachersData: Teacher[] = [
-    {
-      id: 't1',
-      name: 'Олександр Михайленко',
-      role: 'Senior JavaScript Mentor',
-      load: '24 год/тижд',
-      groups: [
-        { id: 'g1', name: 'JS_PRO_01', studentsCount: 15, maxStudents: 20, progress: 65, status: 'Активна' },
-        { id: 'g2', name: 'REACT_BASE_04', studentsCount: 12, maxStudents: 15, progress: 30, status: 'Активна' },
-      ]
-    },
-    {
-      id: 't2',
-      name: 'Марія Ковальчук',
-      role: 'UI/UX Design Lead',
-      load: '16 год/тижд',
-      groups: [
-        { id: 'g3', name: 'FIGMA_START', studentsCount: 18, maxStudents: 18, progress: 90, status: 'Активна' },
-      ]
-    },
-    {
-      id: 't3',
-      name: 'Дмитро Степанов',
-      role: 'Python Developer',
-      load: '32 год/тижд',
-      groups: [
-        { id: 'g4', name: 'PY_AUTO_01', studentsCount: 10, maxStudents: 15, progress: 15, status: 'Набір' },
-        { id: 'g5', name: 'DJANGO_PRO', studentsCount: 14, maxStudents: 20, progress: 0, status: 'Набір' },
-      ]
-    }
-  ];
 
-  // --- ЛОГІКА ПОШУКУ ---
+  // --- ЛОГІКА ПОШУКУ (Тепер працює з реальними даними) ---
   const filteredTeachers = useMemo(() => {
-    return teachersData.filter(t =>
+    return teachers.filter(t =>
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.groups.some(g => g.name.toLowerCase().includes(searchQuery.toLowerCase()))
     );
-  }, [searchQuery]);
+  }, [searchQuery, teachers]);
 
   const menuConfig = [
     {
@@ -117,6 +162,10 @@ export default function Admin() {
       ]
     }
   ];
+
+  if (loading) {
+    return <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white font-black italic animate-pulse text-2xl">CRM_LMS: LOADING DATA...</div>;
+  }
 
   return (
     <div className="relative min-h-screen w-full flex bg-[#0f172a] font-sans text-white overflow-hidden">
@@ -166,8 +215,6 @@ export default function Admin() {
 
       {/* --- MAIN CONTENT --- */}
       <main className="flex-1 relative z-10 flex flex-col h-screen overflow-y-auto no-scrollbar">
-
-        {/* Sticky Header */}
         <header className="flex items-center justify-between p-6 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-30">
           <div className="flex items-center gap-4">
             <button className="md:hidden p-2 bg-white/5 rounded-lg" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -198,19 +245,18 @@ export default function Admin() {
         </header>
 
         <div className="p-6 md:p-10 max-w-7xl w-full mx-auto">
-
-          {/* Stats Bar */}
+          {/* Stats Bar з реальними даними */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {[
-              { label: 'Студентів', val: '248', up: '+12%', icon: <GraduationCap size={20} /> },
-              { label: 'Активних груп', val: '18', up: 'Live', icon: <Layers size={20} /> },
-              { label: 'Прибуток', val: '$4,200', up: '+5%', icon: <TrendingUp size={20} /> },
-              { label: 'Відвідуваність', val: '94%', up: '-2%', icon: <ClipboardList size={20} /> },
+              { label: 'Студентів', val: stats?.students.val, up: stats?.students.up, icon: <GraduationCap size={20} /> },
+              { label: 'Активних груп', val: stats?.groups.val, up: stats?.groups.up, icon: <Layers size={20} /> },
+              { label: 'Прибуток', val: stats?.revenue.val, up: stats?.revenue.up, icon: <TrendingUp size={20} /> },
+              { label: 'Відвідуваність', val: stats?.attendance.val, up: stats?.attendance.up, icon: <ClipboardList size={20} /> },
             ].map((s, i) => (
               <div key={i} className="bg-white/5 border border-white/10 p-5 rounded-[2rem] hover:bg-white/[0.08] transition-all group">
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-indigo-500/10 rounded-2xl text-indigo-400 group-hover:scale-110 transition-transform">{s.icon}</div>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.up.includes('+') || s.up === 'Live' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>{s.up}</span>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.up?.includes('+') || s.up === 'Live' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>{s.up}</span>
                 </div>
                 <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">{s.label}</p>
                 <h4 className="text-2xl font-black mt-1">{s.val}</h4>
@@ -218,7 +264,6 @@ export default function Admin() {
             ))}
           </div>
 
-          {/* --- CONTENT AREA --- */}
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <h3 className="text-2xl font-black tracking-tight italic">Списки та керування</h3>
@@ -232,11 +277,10 @@ export default function Admin() {
               </div>
             </div>
 
-            {/* Teacher Accordion List */}
+            {/* Teacher Accordion List - ТЕПЕР З БАЗИ */}
             <div className="space-y-4">
-              {filteredTeachers.map((teacher) => (
+              {filteredTeachers.length > 0 ? filteredTeachers.map((teacher) => (
                 <div key={teacher.id} className="bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden transition-all duration-300">
-                  {/* Teacher Row */}
                   <div
                     onClick={() => setExpandedTeacher(expandedTeacher === teacher.id ? null : teacher.id)}
                     className={`p-6 flex items-center justify-between cursor-pointer transition-colors ${expandedTeacher === teacher.id ? 'bg-white/[0.08]' : 'hover:bg-white/[0.03]'}`}
@@ -266,7 +310,6 @@ export default function Admin() {
                     </div>
                   </div>
 
-                  {/* Expanded Groups Table */}
                   <div className={`transition-all duration-500 ease-in-out ${expandedTeacher === teacher.id ? 'max-h-[800px] opacity-100 border-t border-white/5' : 'max-h-0 opacity-0 overflow-hidden'}`}>
                     <div className="p-6 bg-black/20">
                       <div className="overflow-x-auto">
@@ -314,19 +357,19 @@ export default function Admin() {
                           </tbody>
                         </table>
                       </div>
-                      <button className="w-full mt-4 py-3 border border-dashed border-white/10 rounded-2xl text-[10px] uppercase font-black text-slate-500 hover:border-indigo-500/50 hover:text-indigo-400 transition-all active:scale-[0.99]">
-                        + Призначити нову групу викладачу
-                      </button>
                     </div>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10">
+                  <p className="text-slate-500 font-bold italic">Записів не знайдено в базі даних</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </main>
 
-      {/* Mobile Overlay */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm transition-opacity" onClick={() => setIsMobileMenuOpen(false)} />
       )}

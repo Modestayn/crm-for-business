@@ -4,7 +4,7 @@ import type { User } from '../types/auth';
 // Базовий URL для ваших API-ендпоінтів
 const API_BASE_URL = 'http://localhost:8000';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
   // Цей параметр критично важливий для Session-based SPA (Laravel Sanctum),
   // оскільки він дозволяє браузеру надсилати та приймати Cookie з автентифікацією
