@@ -5,8 +5,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './pages/Home';
-import Admin from './pages/Admin'
-import Teacher from './pages/Teacher'
+import Admin from './pages/adminPages/Admin.tsx'
+import Teacher from './pages/teacherPAges/Teacher.tsx'
 import ProtectedRoute from './components/ProtectedRoute';
 
 

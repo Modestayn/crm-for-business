@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { api } from '../api/auth';
+import { api } from '../../api/auth.ts';
 import {
   Users,
   GraduationCap,
