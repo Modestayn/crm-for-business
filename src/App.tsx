@@ -6,7 +6,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './pages/Home';
 import Admin from './pages/adminPages/Admin.tsx'
-import Teacher from './pages/teacherPAges/Teacher.tsx'
+import Teacher from './pages/teacherPages/Teacher.tsx'
 import ProtectedRoute from './components/ProtectedRoute';
 
 
