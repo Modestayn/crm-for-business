@@ -1,3 +1,27 @@
 {
-  "welcome": "Welcome to the app"
+  "Login": {
+    "Congratulations": "Welcome back",
+    "p1": "Enter your details to log in to the system",
+    "email": "Jason Merrick", 
+    "password": "Password",
+    "Log": "Login to account",
+    "NewAccount": "Don't have an account yet?",
+    "AddNew": "Create now",
+    "p2": "Welcome to our CRM system!",
+    "erorr": "Login error. Please try again.",
+    "pass2": "Forgot?"
+    },
+
+  "Register": {
+    "NewAccount": "Create account",
+    "p1": "Join our community",
+    "Name": "Your name",
+    "email": "Email address",
+    "password": "Password",
+    "AddNew": "Sign up",
+    "LogNew": "Already have a profile?",
+    "Reg": "Login",
+    "p2": "Welcome to our CRM system!",
+    "erorr": "Registration error. Please try again."
+    }
 }

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import AdminStats from '../components/AdminPanel/AdminStats.tsx';
+import { useTranslation } from 'react-i18next';
+
+
 interface Role {
   name: string;
 }
@@ -19,12 +22,13 @@ const Home: React.FC = () => {
 
   const roleNames = user?.roles ? user.roles.map((role: Role) => role.name) : [];
   const hasRole = (role: string) => roleNames.includes('admin');
+  const { t } = useTranslation();
 
   const [adminLogs] = useState<AdminLog[]>([
-    { id: 1, event: 'Новий користувач: root@crm.com', time: '2 хв тому', status: 'success' },
-    { id: 2, event: 'Спроба доступу до /api/secure', time: '15 хв тому', status: 'warning' },
-    { id: 3, event: 'Систему успішно оновлено', time: '1 год тому', status: 'info' },
-    { id: 4, event: 'Бекап БД завершено', time: '3 год тому', status: 'success' },
+    { id: 1, event: t('Home.id1'), time: t('Home.time1'), status: 'success' },
+    { id: 2, event: t('Home.id2'), time: t('Home.time2'), status: 'warning' },
+    { id: 3, event: t('Home.id3'), time: t('Home.time3'), status: 'info' },
+    { id: 4, event: t('Home.id4'), time: t('Home.time4'), status: 'success' },
   ]);
 
   const handleLogout = async () => {
@@ -32,7 +36,7 @@ const Home: React.FC = () => {
       await logout();
       navigate('/login');
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error(t('Home.erorr'), error);
     }
   };
 
@@ -53,7 +57,6 @@ const Home: React.FC = () => {
           md:grid md:overflow-visible md:px-0 md:pb-0
           ${hasRole('admin') ? 'md:grid-cols-2 lg:grid-cols-[1fr_1.3fr]' : 'md:grid-cols-1'}
         `}>
-
           {/* ПАНЕЛЬ 1: Профіль користувача */}
           <div className="min-w-[88vw] md:min-w-0 snap-center shrink-0">
             <div className="bg-white/5 backdrop-blur-3xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 md:p-10 text-center flex flex-col items-center h-full min-h-[520px]">
@@ -84,19 +87,19 @@ const Home: React.FC = () => {
                   disabled={!roleNames.includes('teacher')}
                   className="group relative w-full py-4 bg-white/5 border border-white/10 text-white text-sm font-extrabold rounded-2xl transition-all hover:bg-white/10 hover:border-indigo-500/50 disabled:opacity-20 active:scale-[0.97]"
                 >
-                  Секція Викладача
+                  {t('Home.teacher')}
                 </button>
                 <button
                   onClick={() => navigate('/admin')}
                   disabled={!hasRole('admin')}
                   className="group relative w-full py-4 bg-white/5 border border-white/10 text-white text-sm font-extrabold rounded-2xl transition-all hover:bg-white/10 hover:border-violet-500/50 disabled:opacity-20 active:scale-[0.97]"
                 >
-                  Секція Адміністратора
+                  {t('Home.admin')}
                 </button>
 
                 <div className="pt-6 border-t border-white/5">
                   <button onClick={handleLogout} className="w-full py-3 text-red-400/80 hover:text-red-400 text-xs font-bold uppercase tracking-widest transition-colors">
-                    Вийти з системи
+                    {t('Home.exit')}
                   </button>
                 </div>
               </div>
@@ -111,8 +114,8 @@ const Home: React.FC = () => {
                 {/* Хедер панелі з "Змійкою" */}
                 <div className="flex items-center justify-between mb-8">
                   <div>
-                    <h2 className="text-xl font-black text-white tracking-tight">Моніторинг</h2>
-                    <p className="text-slate-500 text-[9px] uppercase tracking-[0.2em] font-bold">System Status</p>
+                    <h2 className="text-xl font-black text-white tracking-tight">{t('Home.monitoring')}</h2>
+                    <p className="text-slate-500 text-[9px] uppercase tracking-[0.2em] font-bold">{t('Home.status')}</p>
                   </div>
                   <div className="flex space-x-1.5 items-center bg-white/5 px-3 py-2 rounded-full border border-white/5">
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-bounce"></div>
@@ -144,10 +147,10 @@ const Home: React.FC = () => {
 
                 <div className="mt-6 pt-6 border-t border-white/5 text-center">
                   <p className="text-indigo-300/50 text-[10px] font-medium italic md:hidden">
-                    ← Гортайте вліво для профілю
+                    {t('Home.flip')}
                   </p>
                   <p className="hidden md:block text-slate-600 text-[9px] uppercase tracking-[0.3em]">
-                    Secure Admin Link Active
+                    {t('Home.Secure')}
                   </p>
                 </div>
               </div>

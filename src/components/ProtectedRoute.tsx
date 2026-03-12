@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface ProtectedRouteProps {
   /** * Необов'язковий масив ролей (наприклад, ['admin', 'teacher']),
@@ -11,14 +12,14 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRoles }) => {
   const { isAuthenticated, user, isLoading } = useAuth();
-
+  const { t } = useTranslation();
   // 1. Поки йде завантаження автентифікації, показуємо спінер (або нічого)
   if (isLoading) {
     // У цьому випадку ми використовуємо індикатор завантаження, який був визначений в AuthContext,
     // але тут можна додати локальний спінер.
     return (
       <div className="flex items-center justify-center h-screen bg-gray-900 text-yellow-500">
-        <h1 className="text-xl">Перевірка доступу...</h1>
+        <h1 className="text-xl">{t('ProtectedRoure.h1')}</h1>
       </div>
     );
   }

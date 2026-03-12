@@ -8,6 +8,7 @@ import StatsBar from '../../components/AdminPanel/StatusBar.tsx';
 import TeachersTab from '../../components/AdminPanel/TeachersTab.tsx';
 
 import type { Teacher, DashboardStats } from '../../types/admin.ts';
+import { useTranslation } from 'react-i18next';
 
 export default function Admin() {
   const { logout } = useAuth();
@@ -20,6 +21,7 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState('Головна');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedTeacher, setExpandedTeacher] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,15 +49,15 @@ export default function Admin() {
             .map((user: any) => ({
               id: user.id.toString(),
               name: user.name,
-              role: user.specialization || 'Mentor',
-              load: `${user.weekly_load || 0} год/тижд`,
+              role: user.specialization || t('Admin.role'),
+              load: `${user.weekly_load || 0} t('Admin.load')`,
               groups: (user.groups || []).map((g: any) => ({
                 id: g.id.toString(),
                 name: g.name,
                 studentsCount: g.students_count || 0,
                 maxStudents: g.max_students || 15,
                 progress: g.progress || 0,
-                status: g.status || 'Активна'
+                status: g.status || t('Admin.status')
               }))
             }));
           setTeachers(formattedTeachers);
@@ -89,26 +91,26 @@ export default function Admin() {
 
   const menuConfig = [
     {
-      title: 'Персонал',
+      title: t('Admin.title1'),
       items: [
-        { name: 'Головна', desc: 'Загальна інформація' },
-        { name: 'Викладачі', desc: 'Навантаження та групи' },
-        { name: 'Студенти', desc: 'Профілі та оплати' },
+        { name: t('Admin.name1'), desc: t('Admin.desc1') },
+        { name: t('Admin.name2'), desc: t('Admin.desc2') },
+        { name: t('Admin.name3'), desc: t('Admin.desc3') },
       ]
     },
     {
-      title: 'Навчання',
+      title: t('Admin.title2'),
       items: [
-        { name: 'Групи та Класи', desc: 'Керування складом' },
-        { name: 'Журнал відвідуваності', desc: 'Відмітки Н та З' },
-        { name: 'Розклад занять', desc: 'Планування уроків' },
+        { name: t('Admin.name4'), desc: t('Admin.desc4') },
+        { name: t('Admin.name5'), desc: t('Admin.desc5') },
+        { name: t('Admin.name6'), desc: t('Admin.desc6') },
       ]
     },
     {
-      title: 'Система',
+      title: t('Admin.title3'),
       items: [
-        { name: 'Логи системи', desc: 'Дії адміністраторів' },
-        { name: 'Налаштування', desc: 'Доступи та ролі' },
+        { name: t('Admin.name7'), desc: t('Admin.desc7') },
+        { name: t('Admin.name8'), desc: t('Admin.desc8') },
       ]
     }
   ];
@@ -116,7 +118,7 @@ export default function Admin() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0f172a] flex items-center justify-center text-white font-black italic animate-pulse text-2xl">
-        CRM_LMS: ЗАВАНТАЖЕННЯ ДАНИХ...
+        {t('Admin.div')}
       </div>
     );
   }
@@ -130,12 +132,12 @@ export default function Admin() {
       logout={handleLogout}
       menuConfig={menuConfig}
     >
-      {(activeTab === 'Головна' || activeTab === 'Викладачі') && (
+      {(activeTab === t('Admin.activeTab1') || activeTab === t('Admin.activeTab2')) && (
         <StatsBar stats={stats} />
       )}
 
       <div className="min-h-[400px]">
-        {activeTab === 'Викладачі' && (
+        {activeTab === t('Admin.activeTab2') && (
           <TeachersTab
             teachers={filteredTeachers}
             expandedTeacher={expandedTeacher}
@@ -143,16 +145,16 @@ export default function Admin() {
           />
         )}
 
-        {activeTab === 'Головна' && (
+        {activeTab === t('Admin.activeTab1') && (
           <div className="bg-white/5 border border-white/10 p-10 rounded-[3rem] text-center">
-            <h3 className="text-xl font-bold italic text-indigo-400 mb-2">Dashboard Overview</h3>
-            <p className="text-slate-500 text-sm">Тут будуть графіки та останні сповіщення системи.</p>
+            <h3 className="text-xl font-bold italic text-indigo-400 mb-2">{t('Admin.Dashboard')}</h3>
+            <p className="text-slate-500 text-sm">{t('Admin.graf')}</p>
           </div>
         )}
 
-        {activeTab !== 'Викладачі' && activeTab !== 'Головна' && (
+        {activeTab !== t('Admin.activeTab2') && activeTab !== t('Admin.activeTab1') && (
           <div className="py-20 text-center border border-dashed border-white/10 rounded-[3rem]">
-            <p className="text-slate-500 italic">Розділ "{activeTab}" знаходиться в розробці...</p>
+            <p className="text-slate-500 italic">{t('Admin.p1')} "{activeTab}" {t('Admin.p2')}</p>
           </div>
         )}
       </div>

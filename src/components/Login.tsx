@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { TranslateBtn } from './TranslateBtn';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +11,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ const Login: React.FC = () => {
       await login(email, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Помилка входу. Спробуйте ще раз.');
+      setError(err.response?.data?.message || t('Login.erorr'));
     }
   };
 
@@ -29,20 +32,20 @@ const Login: React.FC = () => {
 
       <div className="relative z-10 w-full max-w-md p-2">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] rounded-[2rem] p-8 md:p-10">
-
+          <TranslateBtn></TranslateBtn>
           {/* Заголовок */}
           <div className="text-center mb-10">
             <h2 className="text-4xl font-extrabold tracking-tight text-white mb-2">
-              Вітаємо знову
+              {t('Login.Congratulations')}
             </h2>
-            <p className="text-slate-400 text-sm">Введіть свої дані для входу в систему</p>
+            <p className="text-slate-400 text-sm">{t('Login.p1')}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Поле Email */}
             <div className="group">
               <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 ml-1">
-                Електронна пошта
+                {t('Login.email')}
               </label>
               <input
                 type="email"
@@ -58,9 +61,9 @@ const Login: React.FC = () => {
             <div className="group">
               <div className="flex justify-between mb-2 ml-1">
                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                  Пароль
+                  {t('Login.password')}
                 </label>
-                <a href="#" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Забули?</a>
+                <a href="#" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">{t('Login.pass2')}</a>
               </div>
               <input
                 type="password"
@@ -83,26 +86,26 @@ const Login: React.FC = () => {
               type="submit"
               className="w-full mt-4 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-[0_10px_20px_-10px_rgba(79,70,229,0.5)] active:scale-[0.97] transition-all duration-200"
             >
-              Увійти в кабінет
+              {t('Login.Log')}
             </button>
           </form>
 
           {/* Футер форми */}
           <div className="mt-10 text-center">
             <p className="text-slate-400 text-sm">
-              Ще не маєте аккаунту?{' '}
+              {t('Login.NewAccount')}{' '}
               <button
                 onClick={() => navigate('/register')}
                 className="text-white font-semibold hover:underline decoration-indigo-500 underline-offset-4 transition-all"
               >
-                Створити зараз
+                {t('Login.AddNew')}
               </button>
             </p>
           </div>
         </div>
 
         <p className="mt-8 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]">
-          Раді вітати у нашій CRM системі!
+          {t('Login.p2')}
         </p>
       </div>
     </div>

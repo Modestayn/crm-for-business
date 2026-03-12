@@ -53,13 +53,13 @@ export const TranslateBtn = () => {
       {isOpen && (
         <div
           className='
-          absolute right-0 mt-2 w-40
-          bg-[#1e293b]/90 backdrop-blur-xl
-          border border-white/10
-          rounded-2xl shadow-2xl shadow-black/50
-          overflow-hidden z-[100]
-          animate-in fade-in zoom-in duration-200
-        '
+  absolute left-0 mt-2 w-40 
+  bg-[#1e293b]/90 backdrop-blur-xl
+  border border-white/10
+  rounded-2xl shadow-2xl shadow-black/50
+  overflow-hidden z-[100]
+  animate-in fade-in zoom-in duration-200
+'
         >
           <div className='py-1'>
             {languages.map((lang) => (

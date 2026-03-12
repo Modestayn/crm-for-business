@@ -1,5 +1,6 @@
 import { UserPlus, Filter, ChevronDown, Settings } from 'lucide-react';
 import type { Teacher } from '../../types/admin.ts';
+import { useTranslation } from 'react-i18next';
 
 interface TeachersTabProps {
   teachers: Teacher[];
@@ -8,16 +9,17 @@ interface TeachersTabProps {
 }
 
 export default function TeachersTab({ teachers, expandedTeacher, setExpandedTeacher }: TeachersTabProps) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h3 className="text-2xl font-black tracking-tight italic">Викладачі та групи</h3>
+        <h3 className="text-2xl font-black tracking-tight italic">{t('TeachersTab.groups')}</h3>
         <div className="flex gap-3">
           <button className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-slate-400 hover:text-white transition-all">
             <Filter size={18} />
           </button>
           <button className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-black transition-all shadow-lg shadow-indigo-600/30">
-            <UserPlus size={16} /> ДОДАТИ ВИКЛАДАЧА
+            <UserPlus size={16} /> {t('TeachersTab.ADD')}
           </button>
         </div>
       </div>
@@ -65,11 +67,11 @@ export default function TeachersTab({ teachers, expandedTeacher, setExpandedTeac
                 <table className="w-full text-left">
                   <thead>
                   <tr className="text-[10px] text-slate-500 uppercase tracking-[0.2em] border-b border-white/5">
-                    <th className="pb-4 font-black">Назва групи</th>
-                    <th className="pb-4 font-black">Студенти</th>
-                    <th className="pb-4 font-black">Прогрес</th>
-                    <th className="pb-4 font-black">Статус</th>
-                    <th className="pb-4 font-black text-right">Дія</th>
+                    <th className="pb-4 font-black">{t('TeachersTab.th1')}</th>
+                    <th className="pb-4 font-black">{t('TeachersTab.th2')}</th>
+                    <th className="pb-4 font-black">{t('TeachersTab.th3')}</th>
+                    <th className="pb-4 font-black">{t('TeachersTab.th4')}</th>
+                    <th className="pb-4 font-black text-right">{t('TeachersTab.th5')}</th>
                   </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
@@ -89,7 +91,7 @@ export default function TeachersTab({ teachers, expandedTeacher, setExpandedTeac
                         <span className={group.status === 'Активна' ? 'text-green-400' : 'text-amber-400'}>{group.status}</span>
                       </td>
                       <td className="py-4 text-right">
-                        <button className="px-3 py-1 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-[10px] font-black rounded-lg transition-all border border-indigo-500/20">ЖУРНАЛ</button>
+                        <button className="px-3 py-1 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white text-[10px] font-black rounded-lg transition-all border border-indigo-500/20">{t('TeachersTab.btn')}</button>
                       </td>
                     </tr>
                   ))}
@@ -99,7 +101,7 @@ export default function TeachersTab({ teachers, expandedTeacher, setExpandedTeac
             </div>
           </div>
         )) : (
-          <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10 text-slate-500 font-bold italic">Записів не знайдено</div>
+          <div className="text-center py-20 bg-white/5 rounded-[2.5rem] border border-dashed border-white/10 text-slate-500 font-bold italic">{t('TeachersTab.div')}</div>
         )}
       </div>
     </div>

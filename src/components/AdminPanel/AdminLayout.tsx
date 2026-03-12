@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ShieldCheck, LogOut, Menu, X, Search, ChevronDown } from 'lucide-react';
 import { TranslateBtn } from '../TranslateBtn';
+
 interface AdminLayoutProps {
   children: React.ReactNode;
   activeTab: string;
@@ -26,6 +27,7 @@ export default function AdminLayout({
   const changeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(e.target.value);
   };
+  const { t } = useTranslation();
   return (
     <div className='relative min-h-screen w-full flex bg-[#0f172a] font-sans text-white overflow-hidden'>
       <div className='fixed inset-0 pointer-events-none'>
@@ -83,7 +85,7 @@ export default function AdminLayout({
             onClick={logout}
             className='w-full flex items-center gap-4 px-4 py-3 text-red-400/80 hover:text-red-400 hover:bg-red-500/5 rounded-2xl transition-all font-bold text-sm'
           >
-            <LogOut size={20} /> <span>Вийти</span>
+            <LogOut size={20} /> <span>{t('AdminLayout.span')}</span>
           </button>
         </div>
       </aside>

@@ -5,7 +5,7 @@ import { fetchCurrentUser, login as apiLogin, register as apiRegister, logout as
 import type { User } from '../types/auth';
 // !!! ВИПРАВЛЕНО: ДОДАНО ІМПОРТ AXIOS !!!
 import axios from 'axios';
-
+import { useTranslation } from 'react-i18next';
 // !!! ВИПРАВЛЕНО: Визначаємо тип, який включає ролі (потрібно для ProtectedRoute) !!!
 type UserWithRoles = User & { roles?: { name: string }[] };
 
@@ -29,6 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // !!! ВИПРАВЛЕНО: Використовуємо розширений тип у useState !!!
   const [user, setUser] = useState<UserWithRoles | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   const loadUser = async () => {
     try {
@@ -86,7 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
-        <h1 className="text-xl text-gray-700">Перевірка автентифікації...</h1>
+        <h1 className="text-xl text-gray-700">{t('AuthContext.h1')}</h1>
       </div>
     );
   }

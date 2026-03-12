@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { TranslateBtn } from './TranslateBtn';
+import { useTranslation } from 'react-i18next';
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
@@ -10,6 +12,7 @@ const Register: React.FC = () => {
   const [error, setError] = useState('');
   const { register } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +23,7 @@ const Register: React.FC = () => {
     } catch (err: any) {
       const errorMessage = err.response?.data?.errors
         ? Object.values(err.response.data.errors).flat().join(' ')
-        : err.response?.data?.message || 'Помилка реєстрації. Спробуйте ще раз.';
+        : err.response?.data?.message || t('Register.erorr');
       setError(errorMessage);
     }
   };
@@ -33,20 +36,20 @@ const Register: React.FC = () => {
 
       <div className="relative z-10 w-full max-w-md p-[0 40px 0 40px]">
         <div className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 md:p-12">
-
+          <TranslateBtn></TranslateBtn>
           {/* Заголовок */}
           <div className="text-center mb-8">
             <h2 className="text-4xl font-black tracking-tight text-white mb-3">
-              Створити аккаунт
+              {t('Register.NewAccount')}
             </h2>
-            <p className="text-slate-400 text-sm">Приєднуйтесь до нашої спільноти</p>
+            <p className="text-slate-400 text-sm">{t('Register.p1')}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Поле Ім'я */}
             <div className="group">
               <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
-                Ваше ім'я
+                {t('Register.Name')}
               </label>
               <input
                 id="name"
@@ -62,7 +65,7 @@ const Register: React.FC = () => {
             {/* Поле Email */}
             <div className="group">
               <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
-                Електронна пошта
+                {t('Register.email')}
               </label>
               <input
                 id="email"
@@ -78,7 +81,7 @@ const Register: React.FC = () => {
             {/* Поле Пароль */}
             <div className="group">
               <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
-                Пароль
+                {t('Register.password')}
               </label>
               <input
                 id="password"
@@ -102,25 +105,25 @@ const Register: React.FC = () => {
               type="submit"
               className="w-full mt-4 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-[0_10px_20px_-10px_rgba(79,70,229,0.5)] active:scale-[0.97] transition-all duration-200"
             >
-              Зареєструватися
+              {t('Register.AddNew')}
             </button>
           </form>
 
           {/* Перехід на вхід */}
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
             <p className="text-slate-400 text-sm">
-              Вже маєте профіль?{' '}
+              {t('Register.LogNew')}{' '}
               <button
                 onClick={() => navigate('/login')}
                 className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors"
               >
-                Увійти
+                {t('Register.Reg')}
               </button>
             </p>
           </div>
         </div>
         <p className="mt-8 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]">
-          Раді вітати у нашій CRM системі!
+          {t('Register.p2')}
         </p>
       </div>
     </div>

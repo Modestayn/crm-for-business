@@ -7,6 +7,7 @@ import {
   Star,
   Save
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // --- ТИПИ ---
 interface Student {
@@ -32,6 +33,7 @@ export default function Teacher() {
   const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [editingGrade, setEditingGrade] = useState<{ studentId: number, grade: number } | null>(null);
+  const { t } = useTranslation();
 
   // 1. Завантаження груп та студентів
   useEffect(() => {
@@ -72,13 +74,13 @@ export default function Teacher() {
       }));
       setEditingGrade(null);
     } catch (error) {
-      alert("Не вдалося оновити оцінку");
+      alert(t('Teacher.alert'));
     }
   };
 
   if (loading) return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center font-bold text-indigo-600 animate-pulse">
-      ЗАВАНТАЖЕННЯ КАБІНЕТУ...
+      {t('Teacher.office')}
     </div>
   );
 
@@ -86,8 +88,8 @@ export default function Teacher() {
     <div className="min-h-screen bg-slate-50 p-4 md:p-10 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto">
         <header className="mb-10">
-          <h1 className="text-4xl font-black text-slate-900 mb-2">Мій Кабінет</h1>
-          <p className="text-slate-500 font-medium">Керування групами та успішністю студентів</p>
+          <h1 className="text-4xl font-black text-slate-900 mb-2">{t('Teacher.myoffice')}</h1>
+          <p className="text-slate-500 font-medium">{t('Teacher.manage')}</p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -95,7 +97,7 @@ export default function Teacher() {
           {/* Список груп */}
           <div className="space-y-4">
             <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-              <Users size={16} /> Мої Групи
+              <Users size={16} /> {t('Teacher.groups')}
             </h2>
             {groups.map(group => (
               <div
@@ -128,16 +130,16 @@ export default function Teacher() {
             {selectedGroup ? (
               <div className="bg-white rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-slate-100">
                 <div className="flex justify-between items-center mb-8">
-                  <h2 className="text-2xl font-black">Студенти: {selectedGroup.name}</h2>
+                  <h2 className="text-2xl font-black">{t('Teacher.students')}: {selectedGroup.name}</h2>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                     <tr className="text-left text-xs font-bold text-slate-400 uppercase tracking-tighter border-b border-slate-50">
-                      <th className="pb-4">Студент</th>
-                      <th className="pb-4 text-center">Поточна оцінка</th>
-                      <th className="pb-4 text-right">Дія</th>
+                      <th className="pb-4">{t('Teacher.student')}</th>
+                      <th className="pb-4 text-center">{t('Teacher.rating')}</th>
+                      <th className="pb-4 text-right">{t('Teacher.action')}</th>
                     </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50">
@@ -188,7 +190,7 @@ export default function Teacher() {
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 rounded-[2.5rem] p-10">
                 <Users size={48} className="mb-4 opacity-20" />
-                <p className="font-bold">Оберіть групу зліва, щоб переглянути студентів</p>
+                <p className="font-bold">{t('Teacher.p1')}</p>
               </div>
             )}
           </div>

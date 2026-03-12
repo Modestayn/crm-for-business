@@ -8,10 +8,11 @@ import Home from './pages/Home';
 import Admin from './pages/adminPages/Admin.tsx'
 import Teacher from './pages/teacherPages/Teacher.tsx'
 import ProtectedRoute from './components/ProtectedRoute';
-
+import { useTranslation } from 'react-i18next';
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <Routes>
@@ -34,7 +35,7 @@ const AppRoutes: React.FC = () => {
       </Route>
 
       {/* 404 Not Found */}
-      <Route path="*" element={<div className="p-10"><h1>404 Сторінка не знайдена</h1></div>} />
+      <Route path="*" element={<div className="p-10"><h1>{t('App.h1')}</h1></div>} />
     </Routes>
   );
 };

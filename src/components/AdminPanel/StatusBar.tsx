@@ -1,18 +1,20 @@
 import { GraduationCap, Layers, TrendingUp, ClipboardList } from 'lucide-react';
 import { type DashboardStats } from '../../types/admin.ts';
+import { useTranslation } from 'react-i18next';
 
 interface StatsBarProps {
   stats: DashboardStats | null;
 }
 
 export default function StatsBar({ stats }: StatsBarProps) {
+  const { t } = useTranslation();
   const statsConfig = [
-    { label: 'Студентів', val: stats?.students.val, up: stats?.students.up, icon: <GraduationCap size={20} /> },
-    { label: 'Активних груп', val: stats?.groups.val, up: stats?.groups.up, icon: <Layers size={20} /> },
-    { label: 'Прибуток', val: stats?.revenue.val, up: stats?.revenue.up, icon: <TrendingUp size={20} /> },
-    { label: 'Відвідуваність', val: stats?.attendance.val, up: stats?.attendance.up, icon: <ClipboardList size={20} /> },
+    { label: t('StatusBar.label1'), val: stats?.students.val, up: stats?.students.up, icon: <GraduationCap size={20} /> },
+    { label: t('StatusBar.label2'), val: stats?.groups.val, up: stats?.groups.up, icon: <Layers size={20} /> },
+    { label: t('StatusBar.label3'), val: stats?.revenue.val, up: stats?.revenue.up, icon: <TrendingUp size={20} /> },
+    { label: t('StatusBar.label4'), val: stats?.attendance.val, up: stats?.attendance.up, icon: <ClipboardList size={20} /> },
   ];
-
+  
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
       {statsConfig.map((s, i) => (
