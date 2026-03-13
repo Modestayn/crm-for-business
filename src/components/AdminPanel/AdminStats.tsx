@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../api/auth.ts';
-
+import { useTranslation } from 'react-i18next';
 interface StatItem {
   label: string;
   value: string | number;
@@ -11,16 +11,38 @@ interface StatItem {
 const AdminStats: React.FC = () => {
   const [stats, setStats] = useState<StatItem[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const loadStats = async () => {
       try {
         // Робимо запит до твого нового API
         const response = await api.get('/api/admin/stats');
-
         // Нагадаю, твій Laravel повертає: data: { main_stats: [...] }
         if (response.data.status === 'success') {
-          setStats(response.data.data.main_stats);
+          const s = response.data.data.teacher_stats;
+
+          const formattedStats: StatItem[] = [
+            {
+              label: `${t('AdminStats.students')}`,
+              value: s.total_students,
+              trend: 'Live',
+              trendUp: true,
+            },
+            {
+              label: `${t('AdminStats.groups')}`,
+              value: s.active_groups,
+              trend: '+0%',
+              trendUp: true,
+            },
+            {
+              label: `${t('AdminStats.profit')}`,
+              value: `$${s.total_income}`,
+              trend: '+0%',
+              trendUp: true,
+            },
+          ];
+
+          setStats(formattedStats);
         }
       } catch (error) {
         console.error("Помилка завантаження статистики:", error);
@@ -46,6 +68,7 @@ const AdminStats: React.FC = () => {
   }
 
   return (
+
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
       {stats.map((stat, idx) => (
         <div

@@ -1,27 +1,134 @@
 {
+  "App": {
+    "h1": "404 Page Not Found"
+  },
+
+  "ProtectedRoure": {
+    "h1": "Checking access..."
+  },
+
+  "AuthContext": {
+    "h1": "Verifying authentication..."
+  },
+
   "Login": {
     "Congratulations": "Welcome back",
-    "p1": "Enter your details to log in to the system",
-    "email": "Jason Merrick", 
+    "p1": "Enter your credentials to log in",
+    "email": "Email Address",
     "password": "Password",
-    "Log": "Login to account",
-    "NewAccount": "Don't have an account yet?",
+    "Log": "Sign In",
+    "NewAccount": "Don't have an account?",
     "AddNew": "Create now",
     "p2": "Welcome to our CRM system!",
-    "erorr": "Login error. Please try again.",
+    "erorr": "Login failed. Please try again.",
     "pass2": "Forgot?"
-    },
+  },
 
   "Register": {
-    "NewAccount": "Create account",
+    "NewAccount": "Create an account",
     "p1": "Join our community",
     "Name": "Your name",
-    "email": "Email address",
+    "email": "Email",
     "password": "Password",
-    "AddNew": "Sign up",
+    "AddNew": "Register",
     "LogNew": "Already have a profile?",
-    "Reg": "Login",
+    "Reg": "Log In",
     "p2": "Welcome to our CRM system!",
-    "erorr": "Registration error. Please try again."
-    }
+    "erorr": "Registration failed. Please try again."
+  },
+
+  "Home": {
+    "teacher": "Teacher Section",
+    "admin": "Admin Section",
+    "exit": "Log Out",
+    "monitoring": "Monitoring",
+    "status": "System Status",
+    "flip": "← Swipe left for profile",
+    "Secure": "Admin secure link active",
+    "id1": "New user: root@crm.com",
+    "id2": "Access attempt at /api/secure",
+    "id3": "System updated successfully",
+    "id4": "DB backup completed",
+    "time1": "2 min ago",
+    "time2": "15 min ago",
+    "time3": "1 hr ago",
+    "time4": "3 hrs ago",
+    "erorr": "Logout error:"
+  },
+
+  "Teacher": {
+    "office": "LOADING DASHBOARD...",
+    "myoffice": "My Dashboard",
+    "manage": "Manage groups and student performance",
+    "groups": "My Groups",
+    "students": "Students",
+    "student": "Student",
+    "rating": "Current Grade",
+    "action": "Action",
+    "p1": "Select a group from the left to view students",
+    "alert": "Failed to update grade"
+  },
+
+  "Admin": {
+    "div": "CRM_LMS: LOADING DATA...",
+    "graf": "Charts and latest system notifications will appear here.",
+    "Dashboard": "Dashboard Overview",
+    "p1": "Section",
+    "p2": "is under development...",
+    "teacher": "Teacher Section",
+    "admin": "Admin Section",
+    "name1": "Home",
+    "name2": "Teachers",
+    "name3": "Students",
+    "name4": "Groups & Classes",
+    "name5": "Attendance Log",
+    "name6": "Class Schedule",
+    "name7": "System Logs",
+    "name8": "Settings",
+    "desc1": "General information",
+    "desc2": "Workload and groups",
+    "desc3": "Profiles and payments",
+    "desc4": "Staff management",
+    "desc5": "Absence and lateness tracking",
+    "desc6": "Lesson planning",
+    "desc7": "Admin actions",
+    "desc8": "Access and roles",
+    "title1": "Teachers",
+    "title2": "Students",
+    "title3": "Groups & Classes",
+    "activeTab1": "Home",
+    "activeTab2": "Teachers",
+    "role": "Mentor",
+    "load": "hrs/week",
+    "status": "Active"
+  },
+
+  "AdminLayout": {
+    "span": "Logout"
+  },
+
+  "StatusBar": {
+    "label1": "Students",
+    "label2": "Active Groups",
+    "label3": "Profit",
+    "label4": "Attendance"
+  },
+
+  "TeachersTab": {
+    "groups": "Teachers and Groups",
+    "ADD": "ADD TEACHER",
+    "th1": "Group Name",
+    "th2": "Students",
+    "th3": "Progress",
+    "th4": "Status",
+    "th5": "Action",
+    "btn": "LOGBOOK",
+    "div": "No records found"
+  },
+
+  "AdminStats": {
+    "students": "Students",
+    "groups": "Active Groups",
+    "profit": "Profit"
+  }
 }

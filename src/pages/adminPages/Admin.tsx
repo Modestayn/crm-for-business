@@ -49,16 +49,16 @@ export default function Admin() {
             .map((user: any) => ({
               id: user.id.toString(),
               name: user.name,
-              role: user.specialization || t('Admin.role'),
-              load: `${user.weekly_load || 0} t('Admin.load')`,
+              role: user?.specialization || t('Admin.role'),
+              load: `${user?.weekly_load ?? 0} ${t('Admin.load')}`,
               groups: (user.groups || []).map((g: any) => ({
                 id: g.id.toString(),
                 name: g.name,
                 studentsCount: g.students_count || 0,
                 maxStudents: g.max_students || 15,
                 progress: g.progress || 0,
-                status: g.status || t('Admin.status')
-              }))
+                status: g.status || `${t('Admin.status')}`,
+              })),
             }));
           setTeachers(formattedTeachers);
         }

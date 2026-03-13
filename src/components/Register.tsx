@@ -29,105 +29,106 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center bg-[#0f172a] overflow-hidden font-sans">
+    <div className='relative min-h-screen w-full flex items-center justify-center bg-[#0f172a] overflow-hidden font-sans'>
       {/* Динамічний фон - ті самі сфери для консистентності */}
-      <div className="absolute top-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-blue-600/10 blur-[120px] animate-pulse"></div>
-      <div className="absolute bottom-[-10%] left-[-10%] w-[45%] h-[45%] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse delay-1000"></div>
+      <div className='absolute top-[-10%] right-[-10%] w-[45%] h-[45%] rounded-full bg-blue-600/10 blur-[120px] animate-pulse'></div>
+      <div className='absolute bottom-[-10%] left-[-10%] w-[45%] h-[45%] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse delay-1000'></div>
 
-      <div className="relative z-10 w-full max-w-md p-[0 40px 0 40px]">
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 md:p-12">
-          <TranslateBtn></TranslateBtn>
+      <div className='relative z-10 w-full max-w-md p-[0 40px 0 40px]'>
+        <div className='bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 md:p-12'>
+          <div className='absolute top-[10px] left-[20px]'>
+            <TranslateBtn></TranslateBtn>
+          </div>
           {/* Заголовок */}
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-black tracking-tight text-white mb-3">
+          <div className='text-center mb-8'>
+            <h2 className='text-4xl mt-[40px] font-black tracking-tight text-white mb-3'>
               {t('Register.NewAccount')}
             </h2>
-            <p className="text-slate-400 text-sm">{t('Register.p1')}</p>
+            <p className='text-slate-400 text-sm'>{t('Register.p1')}</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className='space-y-5'>
             {/* Поле Ім'я */}
-            <div className="group">
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
+            <div className='group'>
+              <label className='block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1'>
                 {t('Register.Name')}
               </label>
               <input
-                id="name"
-                type="text"
+                id='name'
+                type='text'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Олександр"
-                className="w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300"
+                placeholder='Олександр'
+                className='w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300'
                 required
               />
             </div>
 
             {/* Поле Email */}
-            <div className="group">
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
+            <div className='group'>
+              <label className='block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1'>
                 {t('Register.email')}
               </label>
               <input
-                id="email"
-                type="email"
+                id='email'
+                type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="example@mail.com"
-                className="w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300"
+                placeholder='example@mail.com'
+                className='w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300'
                 required
               />
             </div>
 
             {/* Поле Пароль */}
-            <div className="group">
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1">
+            <div className='group'>
+              <label className='block text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2 ml-1'>
                 {t('Register.password')}
               </label>
               <input
-                id="password"
-                type="password"
+                id='password'
+                type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••••••"
-                className="w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300"
+                placeholder='••••••••••••'
+                className='w-full px-5 py-4 bg-slate-900/50 border border-white/5 rounded-2xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300'
                 required
               />
             </div>
 
             {error && (
-              <p className="text-red-400 text-xs text-center font-medium bg-red-500/5 py-2 rounded-lg border border-red-500/10">
+              <p className='text-red-400 text-xs text-center font-medium bg-red-500/5 py-2 rounded-lg border border-red-500/10'>
                 {error}
               </p>
             )}
 
             {/* Кнопка реєстрації */}
             <button
-              type="submit"
-              className="w-full mt-4 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-[0_10px_20px_-10px_rgba(79,70,229,0.5)] active:scale-[0.97] transition-all duration-200"
+              type='submit'
+              className='w-full mt-4 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-[0_10px_20px_-10px_rgba(79,70,229,0.5)] active:scale-[0.97] transition-all duration-200'
             >
               {t('Register.AddNew')}
             </button>
           </form>
 
           {/* Перехід на вхід */}
-          <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <p className="text-slate-400 text-sm">
+          <div className='mt-8 pt-6 border-t border-white/5 text-center'>
+            <p className='text-slate-400 text-sm'>
               {t('Register.LogNew')}{' '}
               <button
                 onClick={() => navigate('/login')}
-                className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors"
+                className='text-indigo-400 font-bold hover:text-indigo-300 transition-colors'
               >
                 {t('Register.Reg')}
               </button>
             </p>
           </div>
         </div>
-        <p className="mt-8 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]">
+        <p className='mt-8 text-center text-slate-600 text-[10px] uppercase tracking-[0.2em]'>
           {t('Register.p2')}
         </p>
       </div>
     </div>
-
   );
 };
 
